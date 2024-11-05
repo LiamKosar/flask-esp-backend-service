@@ -4,11 +4,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return 'Hello, World!'
-
-@app.route('/about')
-def about():
-    return 'About'
+    return 'Hello, this is a backend service for ESP-Next-Testing'
 
 @app.route('/api/hello', methods=['GET'])
 def api_hello():
