@@ -8,7 +8,7 @@ itsdangerous==2.2.0
 Jinja2==3.1.4
 MarkupSafe==3.0.2
 pony==0.7.19
-psycopg2==2.9.10
+psycopg2-binary~=2.9.3
 pytz==2024.2
 six==1.16.0
 Werkzeug==3.1.2
