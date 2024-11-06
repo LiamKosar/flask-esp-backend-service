@@ -57,8 +57,8 @@ db.generate_mapping(create_tables=False)
 
 @app.route('/')
 def home():
-    u1 = User(email='meowmir@gmail.com')
-    db.commit()
+    # u1 = User(email='meowmir@gmail.com')
+    # db.commit()
     return 'Hello, this is a backend service for ESP-Next-Testing'
 
 @app.route('/api/hello', methods=['GET'])
