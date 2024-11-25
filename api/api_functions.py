@@ -7,6 +7,9 @@ class ApiFunctions:
 
     # Auth for ESP Device
     ESP_AUTH_KEY = os.getenv('ESP_AUTH_KEY')
+    
+    # Auth for User activities
+    REGISTER_USER_AUTH = os.getenv('REGISTER_USER_AUTH')
 
     # Updates the runtime for a specific device
     # Outcomes:
@@ -30,13 +33,13 @@ class ApiFunctions:
             return ApiResponses.simple_bad_gateway_api_response()
 
 
-    # Verify API key authorization is correct
+    # Verify API key authorization is correct for Device activities
     # Outcomes:
     #   - No authorization header -> Forbidden
     #   - Wrong authorization header -> Forbidden
     #   - Success -> Return result of callback function
     @classmethod
-    def verify_authorized_request(this, callback_function):
+    def verify_authorized_device_request(this, callback_function):
         VERIFICATION_KEY:str = request.headers.get('Authorization', str).split()[1]
         if VERIFICATION_KEY != this.ESP_AUTH_KEY or VERIFICATION_KEY is None:
             return ApiResponses.simple_forbidden_request_api_response()
@@ -65,3 +68,45 @@ class ApiFunctions:
         except Exception as e:
             return ApiResponses.simple_bad_gateway_api_response()
             
+    # Verify API key authorization is correct for User activities
+    # Outcomes:
+    #   - No authorization header -> Forbidden
+    #   - Wrong authorization header -> Forbidden
+    #   - Success -> Return result of callback function
+    @classmethod
+    def verify_authorized_user_request(this, callback_function):
+        VERIFICATION_KEY:str = request.headers.get('Authorization', str).split()[1]
+        if VERIFICATION_KEY != this.REGISTER_USER_AUTH or VERIFICATION_KEY is None:
+            return ApiResponses.simple_forbidden_request_api_response()
+        return callback_function()
+
+    # Try to get user email from body, also check if already in database
+    # Outcomes:
+    @classmethod
+    def verify_email_given_and_not_exists(this, callback_function):
+        data = request.get_json()
+
+        email = data.get('email')
+        if email is None:
+            return ApiResponses.simple_baq_request_api_response_with_missing_parameter("email")
+        
+        try:
+            email_exists = DatabaseFunctions.contains_user_email_already(email=email)
+            if email_exists:
+                return ApiResponses.simple_baq_request_api_response_with_data(f"email \'{email}\' already exists")
+            return callback_function()
+        except Exception as e:
+            return ApiResponses.simple_bad_gateway_api_response()
+            
+
+    @classmethod
+    def insert_new_user(this):
+
+        data = request.get_json()
+        email = data.get('email')
+
+        try:
+            DatabaseFunctions.insert_new_user_by_email(email=email)
+            return ApiResponses.simple_entry_created_api_response()
+        except Exception as e:
+            return ApiResponses.simple_bad_gateway_api_response()

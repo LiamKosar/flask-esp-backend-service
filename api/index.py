@@ -35,7 +35,12 @@ def api_device_connect():
 #   3) Try to update database, and any corresponding tables (Vehicle, MaintenanceProcedure)
 @app.route('/api/device/update', methods=['POST'])
 def api_device_update():
-    return ApiFunctions.verify_authorized_request(
+    return ApiFunctions.verify_authorized_device_request(
         lambda: ApiFunctions.verify_mac_address_exists(
             lambda: ApiFunctions.update_device_runtime()))
 
+@app.route('/api/user/register', methods=['POST'])
+def register_user():
+    return ApiFunctions.verify_authorized_user_request(
+        lambda: ApiFunctions.verify_email_given_and_not_exists(
+            lambda: ApiFunctions.insert_new_user()))

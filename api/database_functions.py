@@ -1,7 +1,7 @@
 from pony.orm import select
 import datetime
 from notifications.overdue_maintenance_procedures import notify_overdue_maintenance_procedures
-from api.database_objects import db, Device, MaintenanceProcedure, Vehicle
+from api.database_objects import db, Device, MaintenanceProcedure, Vehicle, User
 
 class DatabaseFunctions:
     
@@ -19,6 +19,16 @@ class DatabaseFunctions:
     def contains_device_by_mac_address(this, mac_address: str):
         return Device.exists(mac_address = mac_address)
     
+    # Checks if the given email is associated with a User
+    @classmethod
+    def contains_user_email_already(this, email: str):
+        return User.exists(email=email)
+    
+    @classmethod
+    def insert_new_user_by_email(this, email: str):
+        User(email = email)
+        db.commit()
+
     # Returns the Vehicle associated with the given Device (if any)
     @classmethod
     def get_vehicle_by_device(this, device: Device):
