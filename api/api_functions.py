@@ -75,7 +75,7 @@ class ApiFunctions:
     #   - Success -> Return result of callback function
     @classmethod
     def verify_authorized_user_request(this, callback_function):
-        VERIFICATION_KEY:str = request.headers.get('Authorization', str).split()[1]
+        VERIFICATION_KEY:str = request.headers.get('Authorization', str)
         if VERIFICATION_KEY != this.REGISTER_USER_AUTH or VERIFICATION_KEY is None:
             return ApiResponses.simple_forbidden_request_api_response()
         return callback_function()
