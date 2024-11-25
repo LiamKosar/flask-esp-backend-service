@@ -1,12 +1,18 @@
 from api.simple_api_responses import ApiResponses
-from flask import Flask, jsonify, request
+from flask import request
 import os
-from api.database_functions import db, Device, DatabaseFunctions
-import datetime
-from typing import Optional
+from api.database_functions import DatabaseFunctions
 
 class ApiFunctions:
+
+    # Auth for ESP Device
     ESP_AUTH_KEY = os.getenv('ESP_AUTH_KEY')
+
+    # Updates the runtime for a specific device
+    # Outcomes:
+    #   - Missing runtime_hrs -> Bad Request
+    #   - Update runtime for the device, and POTENTIALLY an associated vehicle/set of maintenance procedures
+    #   - Success -> Return successful entry updated     
     @classmethod
     def update_device_runtime(this):
         data = request.get_json()

@@ -1,34 +1,41 @@
-import os
-from pony.orm import Database, Required, db_session, PrimaryKey, Set, Optional, get, exists, select
+from pony.orm import select
 import datetime
 from notifications.overdue_maintenance_procedures import notify_overdue_maintenance_procedures
-from api.database_objects import db, Device, MaintenanceProcedure, User, Vehicle
+from api.database_objects import db, Device, MaintenanceProcedure, Vehicle
 
 class DatabaseFunctions:
     
-    # @classmethod
-    # def get_runtime_difference(this, mac_address: str, runtime_hrs: float):
-    #     device = Device.get(mac_address=mac_address)
-    
+    # Returns the device associated with given mac_address
+    # Outcomes:
+    #   - Null if device doesn't exist
+    #   - Device
     @classmethod
     def get_device_by_mac_address(this, mac_address: str):
         device = Device.get(mac_address=mac_address)
         return device
-    
+
+    # Checks if the given mac_address is associated with a Device
     @classmethod
     def contains_device_by_mac_address(this, mac_address: str):
         return Device.exists(mac_address = mac_address)
     
+    # Returns the Vehicle associated with the given Device (if any)
     @classmethod
     def get_vehicle_by_device(this, device: Device):
         vehicle = Vehicle.get(device=device)
         return vehicle
     
+    # Returns all maintenance procedures associated with given Vehicle (0 or many)
     @classmethod
     def get_maintenance_procedures_by_vehicle(this, vehicle: Vehicle):
         maintenance_procedures = select(m for m in MaintenanceProcedure if m.vehicle == vehicle)
         return maintenance_procedures
     
+    # Updates the runtime of specified device ONLY IF there is a change from last update
+    # Also:
+    #   - If there is a Vehicle associated with Device, update its runtime
+    #   - If there are MaintenanceProcedure(s) associated with Vehicle, update their runtime
+    #   - If any updated MaintenanceProcedure exceeds set interval, email user with notification
     @classmethod
     def update_device_runtime(this, mac_address: str, runtime_hrs: float):
 
@@ -59,6 +66,7 @@ class DatabaseFunctions:
 
         maintenance_procedures = this.get_maintenance_procedures_by_vehicle(vehicle=vehicle)
         
+        # Find all overdue MaintenanceProcedures
         overdue_procedures = []
         for procedure in maintenance_procedures:
             procedure.current_interval += runtime_difference
@@ -69,6 +77,7 @@ class DatabaseFunctions:
 
         db.commit()
 
+        # If any overdue, email user
         if len(overdue_procedures) > 0:
             notify_overdue_maintenance_procedures(vehicle=vehicle, overdue_procedures=overdue_procedures)
 

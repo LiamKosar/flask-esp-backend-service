@@ -1,6 +1,9 @@
-from pony.orm import Database, Required, db_session, PrimaryKey, Set, Optional, get, exists, select
+from pony.orm import Database, Required, PrimaryKey, Set, Optional
 import os
 
+# Connects to the Vercel PostgreSQL database
+# URL is https://vercel.com/liamkosars-projects/esp-next-testing/stores/postgres/store_1lBBRyI1kqynAq2d/data
+# Ensures only one connection per session
 def connect_to_database():
     db = Database()
     POSTGRES_URL = os.getenv('POSTGRES_URL')
@@ -30,7 +33,6 @@ class Device(db.Entity):
 class MaintenanceProcedure(db.Entity):
     _table_ = 'maintenanceprocedure'
     id = PrimaryKey(int, auto=True)
-    # vehicle_id = Required(int)
     name = Required(str, 100)
     description = Optional(str)
     interval = Required(float)
@@ -40,9 +42,7 @@ class MaintenanceProcedure(db.Entity):
 class Vehicle(db.Entity):
     _table_ = 'vehicle'
     vehicle_id = PrimaryKey(int, auto=True)
-    # user_email = Required(str, 255)
     name = Required(str, 100)
-    # mac_address = Optional(str, 17, unique=True)
     runtime = Optional(float, default=0)
     image_url = Optional(str, 255)
     date_updated = Required(str, 50)

@@ -1,6 +1,8 @@
 from flask import jsonify
 
+# Makes API Responses easier
 class ApiResponses:
+
     # Class-level dictionary holding response data
     RESPONSE_DATA = {
         "BAD_REQUEST": "Bad Request",
@@ -21,53 +23,52 @@ class ApiResponses:
         "SUCCESSFUL_ENTRY_GET_CODE": 200,
         "SUCCESSFULL_CONNECTION": "Connected",
         "SUCCESSFULL_CONNECTION_CODE": 200,
-
     }
 
     @classmethod
-    def simple_api_response(cls, message: str, data: str, status: int):
+    def simple_api_response(this, message: str, data: str, status: int):
         return jsonify({"message": message, "data": data}), status
     
     @classmethod
-    def simple_device_connected_api_response(cls):
-        return jsonify({"message": cls.RESPONSE_DATA["SUCCESSFULL_CONNECTION"]}), cls.RESPONSE_DATA["SUCCESSFULL_CONNECTION_CODE"]
+    def simple_device_connected_api_response(this):
+        return jsonify({"message": this.RESPONSE_DATA["SUCCESSFULL_CONNECTION"]}), this.RESPONSE_DATA["SUCCESSFULL_CONNECTION_CODE"]
 
     @classmethod
-    def simple_baq_request_api_response(cls):
-        return jsonify({"message": cls.RESPONSE_DATA["BAD_REQUEST"]}), cls.RESPONSE_DATA["BAD_REQUEST_CODE"]
+    def simple_baq_request_api_response(this):
+        return jsonify({"message": this.RESPONSE_DATA["BAD_REQUEST"]}), this.RESPONSE_DATA["BAD_REQUEST_CODE"]
     
     @classmethod
-    def simple_baq_request_api_response_with_data(cls, data: str):
-        return jsonify({"message": data}), cls.RESPONSE_DATA["BAD_REQUEST_CODE"]
+    def simple_baq_request_api_response_with_data(this, data: str):
+        return jsonify({"message": data}), this.RESPONSE_DATA["BAD_REQUEST_CODE"]
     
     @classmethod
-    def simple_baq_request_api_response_with_missing_parameter(cls, parameter: str):
-        return jsonify({"message": f"Body parameter \'{parameter}\' is missing"}), cls.RESPONSE_DATA["BAD_REQUEST_CODE"]
+    def simple_baq_request_api_response_with_missing_parameter(this, parameter: str):
+        return jsonify({"message": f"Body parameter \'{parameter}\' is missing"}), this.RESPONSE_DATA["BAD_REQUEST_CODE"]
 
     @classmethod
-    def simple_forbidden_request_api_response(cls):
-        return jsonify({"message": cls.RESPONSE_DATA["FORBIDDEN"]}), cls.RESPONSE_DATA["FORBIDDEN_CODE"]
+    def simple_forbidden_request_api_response(this):
+        return jsonify({"message": this.RESPONSE_DATA["FORBIDDEN"]}), this.RESPONSE_DATA["FORBIDDEN_CODE"]
 
     @classmethod
-    def simple_unauthorized_request_api_response(cls):
-        return jsonify({"message": cls.RESPONSE_DATA["UNAUTHORIZED"]}), cls.RESPONSE_DATA["UNAUTHORIZED_CODE"]
+    def simple_unauthorized_request_api_response(this):
+        return jsonify({"message": this.RESPONSE_DATA["UNAUTHORIZED"]}), this.RESPONSE_DATA["UNAUTHORIZED_CODE"]
 
     @classmethod
-    def simple_entry_created_api_response(cls):
-        return jsonify({"message": cls.RESPONSE_DATA["ENTRY_CREATED"]}), cls.RESPONSE_DATA["SUCCESSFUL_ENTRY_CREATED_CODE"]
+    def simple_entry_created_api_response(this):
+        return jsonify({"message": this.RESPONSE_DATA["ENTRY_CREATED"]}), this.RESPONSE_DATA["SUCCESSFUL_ENTRY_CREATED_CODE"]
 
     @classmethod
-    def simple_entry_deleted_api_response(cls):
-        return jsonify({"message": cls.RESPONSE_DATA["ENTRY_DELETED"]}), cls.RESPONSE_DATA["SUCCESSFUL_ENTRY_DELETED_CODE"]
+    def simple_entry_deleted_api_response(this):
+        return jsonify({"message": this.RESPONSE_DATA["ENTRY_DELETED"]}), this.RESPONSE_DATA["SUCCESSFUL_ENTRY_DELETED_CODE"]
 
     @classmethod
-    def simple_entry_updated_api_response(cls):
-        return jsonify({"message": cls.RESPONSE_DATA["ENTRY_UPDATED"]}), cls.RESPONSE_DATA["SUCCESSFUL_ENTRY_UPDATED_CODE"]
+    def simple_entry_updated_api_response(this):
+        return jsonify({"message": this.RESPONSE_DATA["ENTRY_UPDATED"]}), this.RESPONSE_DATA["SUCCESSFUL_ENTRY_UPDATED_CODE"]
 
     @classmethod
-    def simple_bad_gateway_api_response(cls):
-        return jsonify({"message": cls.RESPONSE_DATA["BAD_GATEWAY"]}), cls.RESPONSE_DATA["BAD_GATEWAY_CODE"]
+    def simple_bad_gateway_api_response(this):
+        return jsonify({"message": this.RESPONSE_DATA["BAD_GATEWAY"]}), this.RESPONSE_DATA["BAD_GATEWAY_CODE"]
 
     @classmethod
-    def simple_get_api_response(cls, data: str):
-        return jsonify({"message": cls.RESPONSE_DATA["SUCCESS_MSG"], "data": data}), cls.RESPONSE_DATA["SUCCESSFUL_ENTRY_GET_CODE"]
+    def simple_get_api_response(this, data: str):
+        return jsonify({"message": this.RESPONSE_DATA["SUCCESS_MSG"], "data": data}), this.RESPONSE_DATA["SUCCESSFUL_ENTRY_GET_CODE"]
