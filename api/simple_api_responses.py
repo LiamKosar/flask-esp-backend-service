@@ -35,6 +35,14 @@ class ApiResponses:
     @classmethod
     def simple_baq_request_api_response(cls):
         return jsonify({"message": cls.RESPONSE_DATA["BAD_REQUEST"]}), cls.RESPONSE_DATA["BAD_REQUEST_CODE"]
+    
+    @classmethod
+    def simple_baq_request_api_response_with_data(cls, data: str):
+        return jsonify({"message": data}), cls.RESPONSE_DATA["BAD_REQUEST_CODE"]
+    
+    @classmethod
+    def simple_baq_request_api_response_with_missing_parameter(cls, parameter: str):
+        return jsonify({"message": f"Body parameter \'{parameter}\' is missing"}), cls.RESPONSE_DATA["BAD_REQUEST_CODE"]
 
     @classmethod
     def simple_forbidden_request_api_response(cls):
