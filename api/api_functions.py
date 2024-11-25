@@ -82,6 +82,9 @@ class ApiFunctions:
 
     # Try to get user email from body, also check if already in database
     # Outcomes:
+    #   - Email not in json body -> Bad request
+    #   - Email already in database -> Bad request
+    #   - Success -> Return result of callback function
     @classmethod
     def verify_email_given_and_not_exists(this, callback_function):
         data = request.get_json()
@@ -98,7 +101,10 @@ class ApiFunctions:
         except Exception as e:
             return ApiResponses.simple_bad_gateway_api_response()
             
-
+    # Creates a new user entry with the request email
+    # Outcomes:
+    #   Successful insertion -> Entry Created Response
+    #   Database Failure -> Bad gateway
     @classmethod
     def insert_new_user(this):
 

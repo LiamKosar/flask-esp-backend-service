@@ -2,6 +2,9 @@ from flask import Flask, jsonify, request
 from pony.flask import Pony
 from api.simple_api_responses import ApiResponses
 from api.api_functions import ApiFunctions
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 Pony(app)

@@ -24,6 +24,7 @@ class DatabaseFunctions:
     def contains_user_email_already(this, email: str):
         return User.exists(email=email)
     
+    # Insert a new User with specified email
     @classmethod
     def insert_new_user_by_email(this, email: str):
         User(email = email)
