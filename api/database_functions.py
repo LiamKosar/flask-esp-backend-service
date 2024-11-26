@@ -89,7 +89,7 @@ class DatabaseFunctions:
         db.commit()
 
         # If any overdue, email user
-        if len(overdue_procedures) > 0:
-            notify_overdue_maintenance_procedures(vehicle=vehicle, overdue_procedures=overdue_procedures)
+        # if len(overdue_procedures) > 0:
+        #     notify_overdue_maintenance_procedures(vehicle=vehicle, overdue_procedures=overdue_procedures)
 
 
